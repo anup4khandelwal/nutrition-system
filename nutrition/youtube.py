@@ -21,3 +21,11 @@ def search_video(dish: str, api_key: str) -> dict | None:
         "title": top["snippet"]["title"],
         "channel": top["snippet"]["channelTitle"],
     }
+
+def build_video_cache(dishes: list, api_key: str, searcher=search_video) -> dict:
+    cache = {}
+    for dish in dishes:
+        hit = searcher(dish, api_key)
+        if hit:
+            cache[dish] = hit
+    return cache

@@ -24,3 +24,12 @@ def test_search_video_none_when_empty(mock_get):
     empty.raise_for_status.return_value = None
     mock_get.return_value = empty
     assert search_video("Nonexistent dish", api_key="KEY") is None
+from nutrition.youtube import build_video_cache
+
+def test_build_video_cache_maps_dishes():
+    dishes = ["Rajma with brown rice", "Palak paneer with roti"]
+    def fake_search(dish, api_key):
+        return {"videoId": dish[:3], "url": "u", "title": dish, "channel": "c"}
+    cache = build_video_cache(dishes, api_key="KEY", searcher=fake_search)
+    assert cache["Rajma with brown rice"]["videoId"] == "Raj"
+    assert set(cache.keys()) == set(dishes)
