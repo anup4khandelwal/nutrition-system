@@ -1,0 +1,7 @@
+data/*.json
+*.pyc
+__pycache__/
+.env
+node_modules/
+.wwebjs_auth/
+.venv/
