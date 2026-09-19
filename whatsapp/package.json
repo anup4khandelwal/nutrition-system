@@ -1,0 +1,7 @@
+{
+  "name": "whatsapp-sender",
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": { "test": "node test_message.mjs" },
+  "dependencies": { "whatsapp-web.js": "^1.23.0", "qrcode-terminal": "^0.12.0" }
+}
