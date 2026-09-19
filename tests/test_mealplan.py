@@ -32,3 +32,12 @@ def test_load_meal_plan_requires_three_meals(tmp_path):
     f = tmp_path / "bad.json"; f.write_text(json.dumps(bad))
     with pytest.raises(ValueError):
         load_meal_plan(str(f))
+
+from nutrition.render import render_markdown
+
+def test_render_markdown_lists_all_days(tmp_path):
+    mp = load_meal_plan(_sample(tmp_path))
+    md = render_markdown(mp)
+    assert "# 30-Day Meal Plan" in md
+    assert "Day 1" in md and "Day 30" in md
+    assert "Rajma with brown rice" in md
