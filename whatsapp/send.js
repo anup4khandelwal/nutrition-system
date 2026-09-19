@@ -7,6 +7,11 @@ import { buildMessage } from "./message.js";
 const payload = JSON.parse(fs.readFileSync("../data/today.json", "utf8"));
 const text = buildMessage(payload);
 const cook = process.env.COOK_WHATSAPP;
+if (!cook) {
+  console.error("COOK_WHATSAPP is not set. Run via ./scripts/run_daily.sh, or:");
+  console.error('  cd ~/nutrition-system && set -a && source .env && set +a && cd whatsapp && node send.js');
+  process.exit(1);
+}
 const chatId = cook.replace(/[^0-9]/g, "") + "@c.us";
 
 function fallback() {
