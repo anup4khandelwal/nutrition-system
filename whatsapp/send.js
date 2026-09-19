@@ -20,8 +20,14 @@ function fallback() {
   console.error("Send failed — wrote wa.me fallback link to data/whatsapp_fallback.txt");
 }
 
+console.log("Starting WhatsApp client (launching browser, first run may take 20-40s)...");
 const client = new Client({ authStrategy: new LocalAuth() });
-client.on("qr", (qr) => qrcode.generate(qr, { small: true }));
+client.on("loading_screen", (p, m) => console.log(`Loading ${p}% ${m || ""}`));
+client.on("qr", (qr) => {
+  console.log("\nScan this QR in WhatsApp -> Linked Devices -> Link a Device:\n");
+  qrcode.generate(qr, { small: true });
+});
+client.on("authenticated", () => console.log("Authenticated! Sending message..."));
 client.on("ready", async () => {
   try {
     await client.sendMessage(chatId, text);
