@@ -9,3 +9,7 @@ node_modules/
 data/*.log
 data/*.err
 data/whatsapp_fallback.txt
+data/profile.json
+data/meal_plan.json
+data/videos.json
+data/meal_plan.md
