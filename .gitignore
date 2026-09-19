@@ -13,3 +13,12 @@ data/profile.json
 data/meal_plan.json
 data/videos.json
 data/meal_plan.md
+
+# Local secrets and runtime/browser state
+.env*
+!.env.example
+whatsapp/.wwebjs_auth*/
+whatsapp/.wwebjs_cache*/
+*.egg-info/
+whatsapp/debug_send.js
+whatsapp/simple_test.js
