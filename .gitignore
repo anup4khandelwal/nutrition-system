@@ -6,3 +6,6 @@ __pycache__/
 node_modules/
 .wwebjs_auth/
 .venv/
+data/*.log
+data/*.err
+data/whatsapp_fallback.txt
