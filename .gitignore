@@ -22,3 +22,4 @@ whatsapp/.wwebjs_cache*/
 *.egg-info/
 whatsapp/debug_send.js
 whatsapp/simple_test.js
+data/whatsapp_link.txt
