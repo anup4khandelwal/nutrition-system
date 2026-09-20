@@ -1,19 +1,37 @@
-import json, urllib.parse, os, subprocess
+import json
+import os
+import shutil
+import subprocess
 
-payload = json.load(open('data/today.json'))
-meals = payload['meals']
-lines = ["🍲 *Today's meals & recipe videos*", '']
-for meal in ['breakfast', 'lunch', 'dinner']:
-    m = meals[meal]
-    label = meal.capitalize()
-    lines.append(f'*{label}:* {m["dish"]}')
-    if m.get('video') and m['video'].get('url'):
-        lines.append(f"▶️ {m['video']['url']}")
-    lines.append('')
-lines.append('Please prepare as per the videos. Thank you! 🙏')
-text = '\n'.join(lines)
-cook = os.environ['COOK_WHATSAPP'].replace('+', '').replace(' ', '')
-link = f'https://wa.me/{cook}?text={urllib.parse.quote(text)}'
-open('data/whatsapp_link.txt', 'w').write(link)
-print('Opening WhatsApp link in browser - tap Send to deliver message')
-subprocess.run(['open', link])
+from nutrition.delivery import build_daily_message, build_whatsapp_link
+
+
+def open_link(link: str) -> None:
+    termux_open = shutil.which("termux-open-url")
+    if termux_open:
+        subprocess.run([termux_open, link, "com.whatsapp.w4b"], check=True)
+        return
+
+    mac_open = shutil.which("open")
+    if mac_open:
+        subprocess.run([mac_open, link], check=True)
+        return
+
+    raise RuntimeError("no supported URL opener found")
+
+
+def main() -> None:
+    with open("data/today.json") as file:
+        payload = json.load(file)
+
+    message = build_daily_message(payload)
+    link = build_whatsapp_link(os.environ["COOK_WHATSAPP"], message)
+    with open("data/whatsapp_link.txt", "w") as file:
+        file.write(link)
+
+    print("Opening WhatsApp Business with a prefilled message; tap Send to deliver it.")
+    open_link(link)
+
+
+if __name__ == "__main__":
+    main()
